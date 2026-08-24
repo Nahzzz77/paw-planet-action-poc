@@ -1,47 +1,86 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
 
-type PlayerState = 'loading' | 'idle' | 'playing' | 'error';
+type LoadState = 'loading' | 'ready' | 'error';
+type PetAction = 'lick' | 'feed' | 'pet' | null;
 
 const VIDEO = '/assets/cat-lick-paw.mp4';
 const POSTER = '/assets/gray-cat-idle.png';
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [state, setState] = useState<PlayerState>('loading');
-  const [notice, setNotice] = useState('点击“舔爪”，看完后会自动回到待机');
+  const effectTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [loadState, setLoadState] = useState<LoadState>('loading');
+  const [action, setAction] = useState<PetAction>(null);
+  const [notice, setNotice] = useState('舔爪是真实成片；喂食和摸头是可操作的交互样机');
+  const [bond, setBond] = useState(72);
+  const [fullness, setFullness] = useState(66);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    const ready = () => setState('idle');
-    const error = () => { setState('error'); setNotice('视频素材加载失败，请刷新页面再试'); };
+    const ready = () => setLoadState('ready');
+    const error = () => { setLoadState('error'); setNotice('舔爪视频加载失败，喂食和摸头仍可体验'); };
     video.addEventListener('loadeddata', ready);
     video.addEventListener('error', error);
     if (video.readyState >= 2) ready();
-    return () => { video.removeEventListener('loadeddata', ready); video.removeEventListener('error', error); };
+    return () => {
+      video.removeEventListener('loadeddata', ready);
+      video.removeEventListener('error', error);
+      if (effectTimer.current) clearTimeout(effectTimer.current);
+    };
   }, []);
 
   const playLick = async () => {
     const video = videoRef.current;
-    if (!video || state === 'playing' || state === 'error') return;
+    if (!video || action || loadState !== 'ready') return;
     video.currentTime = 0;
-    setState('playing');
+    setAction('lick');
     setNotice('小灰正在认真清理小爪子……');
     try { await video.play(); }
-    catch { setState('idle'); setNotice('浏览器没有启动播放，请再点一次“舔爪”'); }
+    catch { setAction(null); setNotice('浏览器没有启动播放，请再点一次“舔爪”'); }
   };
 
-  const finishAction = () => {
+  const finishLick = () => {
     const video = videoRef.current;
     if (video) { video.pause(); video.currentTime = 0; }
-    setState('idle');
-    setNotice('动作已完成，小灰回到待机状态');
+    setAction(null);
+    setNotice('舔爪完成，小灰已回到待机状态');
   };
 
-  const pending = (label: string) => setNotice(`${label}的交互位置已留好，下一阶段只需接入对应成片`);
-  const stateLabel = { loading: '加载动作素材', idle: '待机中', playing: '舔爪中', error: '素材异常' }[state];
+  const playInteraction = (next: Exclude<PetAction, 'lick' | null>) => {
+    if (action) return;
+    if (effectTimer.current) clearTimeout(effectTimer.current);
+    setAction(next);
+    setNotice(next === 'feed' ? '小灰闻到了香香的猫粮……' : '再轻轻摸两下，小灰很喜欢');
+    effectTimer.current = setTimeout(() => {
+      if (next === 'feed') {
+        setFullness((value) => Math.min(100, value + 12));
+        setNotice('喂食完成，饱腹度 +12');
+      } else {
+        setBond((value) => Math.min(100, value + 5));
+        setNotice('摸头完成，亲密度 +5');
+      }
+      setAction(null);
+      effectTimer.current = null;
+    }, next === 'feed' ? 2700 : 2300);
+  };
+
+  const stateLabel = action === 'lick'
+    ? '舔爪中'
+    : action === 'feed'
+      ? '喂食中'
+      : action === 'pet'
+        ? '摸头中'
+        : loadState === 'loading'
+          ? '加载成片'
+          : loadState === 'error'
+            ? '部分可用'
+            : '待机中';
+  const messageIcon = action === 'feed' ? '●' : action === 'pet' ? '♥' : action === 'lick' ? '✦' : '♡';
+  const busy = action !== null;
 
   return (
     <main className="shell">
@@ -52,30 +91,40 @@ export default function Home() {
           <div className="proof"><i /> POC</div>
         </header>
 
-        <section className="stage" aria-label="宠物动作舞台">
+        <section className={`stage action-${action ?? 'idle'}`} aria-label="宠物动作舞台">
           <div className="stageLight" />
-          <div className={`state is-${state}`}><i /> {stateLabel}</div>
+          <div className={`state is-${action ?? loadState}`}><i /> {stateLabel}</div>
+
           {/* The poster is a local, fixed-size POC asset; no runtime image service is needed. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className={state === 'playing' ? 'idlePet hidden' : 'idlePet'} src={POSTER} alt="灰色英国短毛猫小灰的待机形象" />
-          <video ref={videoRef} className={state === 'playing' ? 'actionVideo visible' : 'actionVideo'} src={VIDEO} poster={POSTER} preload="auto" playsInline muted onEnded={finishAction} aria-label="小灰舔爪动作" />
+          <img className={action === 'lick' ? 'idlePet hidden' : 'idlePet'} src={POSTER} alt="灰色英国短毛猫小灰的待机形象" />
+          <video ref={videoRef} className={action === 'lick' ? 'actionVideo visible' : 'actionVideo'} src={VIDEO} poster={POSTER} preload="auto" playsInline muted onEnded={finishLick} aria-label="小灰舔爪动作" />
+
+          <button className="headHit" type="button" aria-label="直接摸小灰的头" disabled={busy} onClick={() => playInteraction('pet')}><span>轻点头部</span></button>
+
+          <div className="feedFx" aria-hidden="true">
+            <i className="kibble k1" /><i className="kibble k2" /><i className="kibble k3" />
+            <div className="bowl"><span>● ● ●</span><b>HUI</b></div>
+          </div>
+          <div className="petFx" aria-hidden="true"><span className="petHand">🫳</span><i>♥</i><i>♥</i><i>♥</i></div>
+
           <div className="floor" />
-          <div className="message" aria-live="polite"><span>{state === 'playing' ? '✦' : '♡'}</span><p>{notice}</p></div>
+          <div className="message" aria-live="polite"><span>{messageIcon}</span><p>{notice}</p></div>
         </section>
 
         <section className="vitals" aria-label="宠物状态">
-          <div><span className="vitalIcon">♥</span><p><small>亲密度</small><strong>72</strong></p></div>
-          <div><span className="vitalIcon">☼</span><p><small>今日心情</small><strong>开心</strong></p></div>
-          <div><span className="vitalIcon">◔</span><p><small>动作库</small><strong>1 / 3</strong></p></div>
+          <div><span className="vitalIcon">♥</span><p><small>亲密度</small><strong>{bond}</strong></p><em style={{ '--value': `${bond}%` } as CSSProperties} /></div>
+          <div><span className="vitalIcon">●</span><p><small>饱腹度</small><strong>{fullness}</strong></p><em style={{ '--value': `${fullness}%` } as CSSProperties} /></div>
+          <div><span className="vitalIcon">◔</span><p><small>动作成片</small><strong>1 / 3</strong></p></div>
         </section>
 
         <nav className="actions" aria-label="宠物互动动作">
-          <button type="button" className="pending" onClick={() => pending('喂食')}><span>🦴</span><strong>喂食</strong><small>待接成片</small></button>
-          <button type="button" className="ready" disabled={state === 'loading' || state === 'playing' || state === 'error'} onClick={playLick}><span>🐾</span><strong>{state === 'playing' ? '播放中' : '舔爪'}</strong><small>已接成片</small></button>
-          <button type="button" className="pending" onClick={() => pending('摸头')}><span>♡</span><strong>摸头</strong><small>待接成片</small></button>
+          <button type="button" className={action === 'feed' ? 'prototype active' : 'prototype'} disabled={busy} onClick={() => playInteraction('feed')}><span>🦴</span><strong>{action === 'feed' ? '喂食中' : '喂食'}</strong><small>交互样机</small></button>
+          <button type="button" className={action === 'lick' ? 'ready active' : 'ready'} disabled={busy || loadState !== 'ready'} onClick={playLick}><span>🐾</span><strong>{action === 'lick' ? '播放中' : '舔爪'}</strong><small>真实成片</small></button>
+          <button type="button" className={action === 'pet' ? 'prototype active' : 'prototype'} disabled={busy} onClick={() => playInteraction('pet')}><span>♡</span><strong>{action === 'pet' ? '摸摸中' : '摸头'}</strong><small>交互样机</small></button>
         </nav>
 
-        <footer className="honesty"><i /><p><strong>当前验证范围</strong><span>真实跑通“点击 → 播放预制动作 → 自动回待机”，不谎称已完成照片个性化。</span></p></footer>
+        <footer className="honesty"><i /><p><strong>三个入口都已可操作</strong><span>舔爪播放真实 MP4；喂食与摸头先验证交互、状态和数值，待同角色成片完成后原位替换。</span></p></footer>
       </section>
     </main>
   );
