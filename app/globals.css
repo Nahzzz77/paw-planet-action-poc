@@ -1,0 +1,59 @@
+@import 'tailwindcss';
+
+:root { color: #242420; background: #eeebe4; font-family: Inter, ui-rounded, "PingFang SC", "Microsoft YaHei", sans-serif; font-synthesis: none; }
+* { box-sizing: border-box; }
+html, body { min-width: 320px; min-height: 100%; margin: 0; }
+button { font: inherit; -webkit-tap-highlight-color: transparent; }
+
+.shell { min-height: 100svh; padding: 24px; background: radial-gradient(circle at 18% 10%,rgba(255,255,255,.96),transparent 28%),radial-gradient(circle at 84% 92%,rgba(208,220,188,.38),transparent 30%),#eeebe4; }
+.phone { width: min(100%,440px); min-height: calc(100svh - 48px); margin: 0 auto; overflow: hidden; border: 1px solid rgba(47,47,38,.08); border-radius: 36px; background: #f9f8f4; box-shadow: 0 28px 80px rgba(50,48,42,.17),0 3px 10px rgba(50,48,42,.06); }
+.header { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 13px; padding: 18px 18px 13px; }
+.round { width: 44px; height: 44px; border: 0; border-radius: 15px; color: #34342e; background: #eeece5; font-size: 29px; line-height: 1; cursor: pointer; }
+.header span { color: #99978e; font-size: 10px; font-weight: 750; letter-spacing: .08em; }
+.header h1 { margin: 2px 0 0; font-size: 22px; line-height: 1; letter-spacing: -.035em; }
+.proof { display: flex; align-items: center; gap: 6px; padding: 8px 10px; border-radius: 999px; color: #576246; background: #e7ecdc; font-size: 10px; font-weight: 900; letter-spacing: .08em; }
+.proof i,.state i { width: 6px; height: 6px; border-radius: 50%; background: #718056; box-shadow: 0 0 0 4px rgba(113,128,86,.12); }
+
+.stage { position: relative; height: min(57svh,565px); min-height: 470px; margin: 0 12px; overflow: hidden; border: 1px solid rgba(62,60,51,.07); border-radius: 29px; isolation: isolate; background: linear-gradient(180deg,#fff 0 78%,#f1f0eb 100%); }
+.stageLight { position: absolute; z-index: 0; top: -25%; left: 50%; width: 125%; aspect-ratio: 1; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(circle,rgba(249,241,214,.66),rgba(255,255,255,0) 67%); }
+.state { position: absolute; z-index: 8; top: 15px; left: 15px; display: flex; align-items: center; gap: 7px; padding: 8px 11px; border: 1px solid rgba(55,55,47,.07); border-radius: 999px; color: #6e6d65; background: rgba(255,255,255,.88); box-shadow: 0 8px 24px rgba(55,54,47,.06); font-size: 10px; font-weight: 800; backdrop-filter: blur(10px); }
+.state.is-playing i { background: #d58965; box-shadow: 0 0 0 4px rgba(213,137,101,.12); animation: pulse 1s ease-in-out infinite; }
+.state.is-error i { background: #b95e55; }
+
+.idlePet,.actionVideo { position: absolute; z-index: 3; inset: 10% 4% 15%; width: 92%; height: 75%; object-fit: contain; object-position: 50% 100%; mix-blend-mode: multiply; filter: drop-shadow(0 16px 16px rgba(63,58,49,.09)); transition: opacity 150ms ease; }
+.idlePet { opacity: 1; }
+.idlePet.hidden { opacity: 0; }
+.actionVideo { opacity: 0; pointer-events: none; }
+.actionVideo.visible { opacity: 1; }
+.floor { position: absolute; z-index: 2; right: 17%; bottom: 12%; left: 17%; height: 7%; border-radius: 50%; background: rgba(89,83,72,.08); filter: blur(13px); }
+.message { position: absolute; z-index: 10; right: 15px; bottom: 14px; left: 15px; display: grid; grid-template-columns: 29px 1fr; align-items: center; gap: 9px; min-height: 53px; padding: 9px 13px; border: 1px solid rgba(71,69,60,.08); border-radius: 17px; background: rgba(255,255,255,.91); box-shadow: 0 10px 30px rgba(59,57,50,.09); backdrop-filter: blur(12px); }
+.message > span { display: grid; width: 29px; height: 29px; place-items: center; border-radius: 10px; color: #68754f; background: #edf0e6; }
+.message p { margin: 0; color: #6e6b63; font-size: 10px; font-weight: 680; line-height: 1.45; }
+
+.vitals { display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; padding: 10px 12px 0; }
+.vitals > div { display: flex; align-items: center; gap: 7px; min-width: 0; padding: 10px; border: 1px solid rgba(61,60,52,.06); border-radius: 16px; background: #fff; }
+.vitalIcon { display: grid; width: 28px; height: 28px; flex: 0 0 auto; place-items: center; border-radius: 9px; color: #76815f; background: #edf0e6; font-size: 13px; }
+.vitals p { display: grid; min-width: 0; gap: 1px; margin: 0; }
+.vitals small { overflow: hidden; color: #a19e95; font-size: 8px; font-weight: 750; white-space: nowrap; }
+.vitals strong { color: #4c4b45; font-size: 11px; }
+
+.actions { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; padding: 10px 12px 0; }
+.actions button { display: grid; min-height: 74px; place-items: center; gap: 1px; padding: 8px 4px; border: 1px solid rgba(61,60,52,.07); border-radius: 19px; color: #77746c; background: #fff; cursor: pointer; transition: transform 150ms ease,box-shadow 150ms ease; }
+.actions button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 9px 22px rgba(66,64,56,.09); }
+.actions button:disabled { cursor: wait; opacity: .72; }
+.actions button > span { font-size: 22px; }
+.actions button strong { font-size: 11px; }
+.actions button small { color: #aaa79f; font-size: 8px; }
+.actions .ready { color: #fff; background: #697652; box-shadow: 0 9px 22px rgba(91,105,68,.2); }
+.actions .ready small { color: rgba(255,255,255,.7); }
+.actions .pending { border-style: dashed; }
+
+.honesty { display: grid; grid-template-columns: 7px 1fr; gap: 10px; margin: 10px 12px 15px; padding: 11px 13px; border-radius: 15px; background: #eeece5; }
+.honesty > i { width: 7px; height: 7px; margin-top: 4px; border-radius: 50%; background: #7b806d; }
+.honesty p { display: grid; gap: 2px; margin: 0; }
+.honesty strong { color: #69675f; font-size: 9px; }
+.honesty span { color: #929087; font-size: 8px; line-height: 1.45; }
+
+@keyframes pulse { 50% { transform: scale(.75); opacity: .55; } }
+@media (max-width:520px) { .shell { padding: 0; background: #f9f8f4; } .phone { min-height: 100svh; border: 0; border-radius: 0; box-shadow: none; } .stage { height: 56svh; min-height: 430px; } }
+@media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; } }
