@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-08-27T14:08:39Z",
+  "result": "passed",
+  "action": "feed",
+  "templateVersion": "cat_feed_v1",
+  "promptId": "a043e5d3-8af2-430e-ac8d-90a2572e4ad4",
+  "replaceMode": true,
+  "master": {
+    "file": "public/assets/generated/pet-avatar-orange-longhair-motion-safe-v3.png",
+    "sha256": "7aa1e9dcb9b3db7e2c83f5bbca6068185a68ec3fc9feb91d0c9ba1e1668e11db"
+  },
+  "driver": {
+    "file": "workflows/drivers/cat-feed-bowl-driver-seedance-v1.mp4",
+    "sha256": "049f07893da1d235d190d7205de8280c4b1c9034fea03ae96c61c4e2d597cd5a"
+  },
+  "workflow": {
+    "file": "workflows/compiled/orange-longhair-test-v1-cat-feed-v1-API.json",
+    "sha256": "ea6b84a3300940632d41027067d1fad76817c5d94467633dd2d4db2d4ae2da7f"
+  },
+  "rawOutput": {
+    "file": "workflows/validation/orange-longhair-feed-run-v1/cat-feed-orange-longhair-scail2-cn-raw-v1.mp4",
+    "sha256": "954f191d225c0c652f8dc6d0b3b1e9981a0c0d9555132bf52f60fd89600a818a"
+  },
+  "productOutput": {
+    "file": "public/assets/generated/cat-feed-orange-longhair-scail2-cn-v1.mp4",
+    "sha256": "173ef1f86bf31909607401b25b2231d12519fa264610a0f66b7ca5e936d0d82b",
+    "width": 576,
+    "height": 768,
+    "fps": 16,
+    "frames": 81,
+    "durationSeconds": 5.0625,
+    "codec": "h264",
+    "pixelFormat": "yuv420p"
+  },
+  "localCalibration": {
+    "reason": "The raw SCAIL output preserved the action but shifted the neutral studio background toward purple-gray.",
+    "method": "A low-saturation highlight mask maps only neutral bright pixels toward the approved idle warm-white vertical background gradient; saturated orange fur, green eyes, kibble and dark details remain outside the correction mask.",
+    "generationCreditsUsed": false
+  },
+  "acceptance": {
+    "identityPreserved": true,
+    "longHairPreserved": true,
+    "greenEyesPreserved": true,
+    "singleBowl": true,
+    "multipleKibblePieces": true,
+    "mouthInsideBowl": true,
+    "bowlRimOccludesTongue": true,
+    "bowlExitsBeforeLastFrame": true,
+    "neutralFinalPose": true,
+    "extraLimbsOrTail": false,
+    "backgroundCalibratedToIdle": true
+  }
+}

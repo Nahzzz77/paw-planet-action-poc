@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>小爪星球测试宠物生成前后对比</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 100%; height: 100%; }
+    body {
+      display: grid;
+      place-items: center;
+      color: #2d3028;
+      background: #f3f0e7;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    main {
+      width: 1200px;
+      height: 900px;
+      padding: 54px 64px 46px;
+      background:
+        radial-gradient(circle at 92% 4%, rgba(207, 218, 188, .58), transparent 28%),
+        #fbfaf6;
+    }
+    header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 34px;
+    }
+    .eyebrow {
+      margin: 0 0 12px;
+      color: #73815b;
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: .12em;
+    }
+    h1 {
+      margin: 0;
+      font-size: 46px;
+      line-height: 1.2;
+      letter-spacing: -.03em;
+    }
+    .tag {
+      padding: 11px 18px;
+      border-radius: 999px;
+      color: #53603f;
+      background: #e7eddc;
+      font-size: 19px;
+      font-weight: 700;
+    }
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr 76px 1fr;
+      align-items: center;
+    }
+    figure { margin: 0; }
+    .frame {
+      height: 570px;
+      overflow: hidden;
+      border-radius: 34px;
+      background: #eeece4;
+      box-shadow: 0 18px 46px rgba(62, 68, 50, .12);
+    }
+    .frame img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .after img { object-position: 50% 50%; }
+    figcaption {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 18px 6px 0;
+    }
+    .label { font-size: 26px; font-weight: 750; }
+    .note { color: #81847a; font-size: 18px; }
+    .arrow {
+      display: grid;
+      place-items: center;
+      width: 54px;
+      height: 54px;
+      margin: 0 auto 58px;
+      border-radius: 50%;
+      color: #fff;
+      background: #77885d;
+      font-size: 30px;
+      font-weight: 700;
+    }
+    footer {
+      margin-top: 30px;
+      padding: 20px 26px;
+      border-radius: 22px;
+      color: #5b604f;
+      background: #edf0e7;
+      font-size: 21px;
+      line-height: 1.55;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <p class="eyebrow">小爪星球 · 测试宠物</p>
+        <h1>从真实照片到卡通母版</h1>
+      </div>
+      <div class="tag">POC 实测</div>
+    </header>
+    <section class="comparison" aria-label="测试宠物生成前后对比">
+      <figure>
+        <div class="frame"><img src="../02-media/test-pet-before.jpg" alt="橘色长毛测试猫原始照片"></div>
+        <figcaption><span class="label">原始照片</span><span class="note">测试素材</span></figcaption>
+      </figure>
+      <div class="arrow" aria-hidden="true">→</div>
+      <figure>
+        <div class="frame after"><img src="../02-media/test-pet-cartoon-master.png" alt="测试猫生成的卡通母版"></div>
+        <figcaption><span class="label">卡通母版</span><span class="note">当前 POC 输出</span></figcaption>
+      </figure>
+    </section>
+    <footer>这是同一只测试宠物的一组真实结果。卡通版会先交给用户确认是否相像，确认后才继续制作互动动作。</footer>
+  </main>
+</body>
+</html>

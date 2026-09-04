@@ -9,7 +9,21 @@
     "dev": "vinext dev",
     "build": "vinext build",
     "start": "vinext start",
-    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next"
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
+    "smooth:video": "bash scripts/smooth-pet-video.sh",
+    "close:seam": "bash scripts/close-idle-seam.sh",
+    "preview:feed": "bash scripts/build-feed-bowl-preview.sh",
+    "pet:workflow": "node scripts/pet-action-workflow.mjs",
+    "pet:batch": "node --experimental-strip-types scripts/run-pet-action-batch.ts",
+    "pet:coordinator": "node --experimental-strip-types scripts/run-pet-action-coordinator.ts",
+    "pet:finalize": "node --experimental-strip-types scripts/finalize-pet-video.ts",
+    "test:branches": "node --experimental-strip-types --test lib/pet-action-branches.test.ts",
+    "test:jobs": "node --experimental-strip-types --test lib/pet-avatar-jobs.test.ts",
+    "test:coordinator": "node --experimental-strip-types --test lib/pet-action-coordinator.test.ts scripts/pet-action-coordinator.test.ts",
+    "test:worker-pool": "node --experimental-strip-types --test lib/comfy/worker-pool.test.ts",
+    "test:workflow": "node --test scripts/pet-action-workflow.test.mjs",
+    "test:video": "node --experimental-strip-types --test lib/video/pet-video-finalizer.test.ts",
+    "test": "npm run test:branches && npm run test:jobs && npm run test:coordinator && npm run test:workflow && npm run test:worker-pool && npm run test:video"
   },
   "dependencies": {
     "next": "16.2.6",

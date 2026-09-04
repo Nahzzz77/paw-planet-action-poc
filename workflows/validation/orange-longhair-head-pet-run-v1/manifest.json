@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-08-27T14:46:09Z",
+  "result": "passed",
+  "action": "head-pet",
+  "templateVersion": "cat_head_pet_v1",
+  "promptId": "6545ac85-4b72-4f37-8951-6619cb7e9a98",
+  "replaceMode": false,
+  "master": {
+    "file": "public/assets/generated/pet-avatar-orange-longhair-motion-safe-v3.png",
+    "sha256": "7aa1e9dcb9b3db7e2c83f5bbca6068185a68ec3fc9feb91d0c9ba1e1668e11db"
+  },
+  "driver": {
+    "file": "workflows/drivers/cat-head-pet-driver-poc-v1.mp4",
+    "sha256": "22f58d2a8badb3c0e2b67b46f896233f9761d9751d9335700f2494fd38b25f7d"
+  },
+  "workflow": {
+    "file": "workflows/compiled/orange-longhair-test-v1-cat-head-pet-v1-API.json",
+    "sha256": "4bedd8b8c4004deb2365039a6584880c57b9129f5897e4cafa306fd82a32658e"
+  },
+  "rawOutput": {
+    "file": "workflows/validation/orange-longhair-head-pet-run-v1/cat-head-pet-orange-longhair-scail2-cn-raw-v1.mp4",
+    "sha256": "bb57b1ee8ec22e3135d5006cb58eb430756ef7708b92847c8cf0832b7abbd48c"
+  },
+  "productOutput": {
+    "file": "public/assets/generated/cat-head-pet-orange-longhair-scail2-cn-v1.mp4",
+    "sha256": "bb57b1ee8ec22e3135d5006cb58eb430756ef7708b92847c8cf0832b7abbd48c",
+    "width": 576,
+    "height": 768,
+    "fps": 16,
+    "frames": 81,
+    "durationSeconds": 5.0625,
+    "codec": "h264",
+    "pixelFormat": "yuv420p"
+  },
+  "localCalibration": {
+    "applied": false,
+    "reason": "The raw output already matches the approved idle warm-white background and character color closely.",
+    "generationCreditsUsed": false
+  },
+  "handoffChecks": {
+    "idleFirstFrameVsActionFirstFrameSsim": 0.873596,
+    "idleFirstFrameVsActionLastFrameSsim": 0.865888,
+    "actionFirstFrameVsActionLastFrameSsim": 0.88343,
+    "idleTopLeftYAverage": 227.369,
+    "actionFirstTopLeftYAverage": 227.352,
+    "actionLastTopLeftYAverage": 226.547
+  },
+  "acceptance": {
+    "identityPreserved": true,
+    "longHairPreserved": true,
+    "greenEyesPreserved": true,
+    "chinRaises": true,
+    "eyesCloseAndReopen": true,
+    "neutralFinalPose": true,
+    "humanHandOrArm": false,
+    "tongueVisible": false,
+    "extraLimbsOrTail": false,
+    "bodyAndTailStable": true,
+    "backgroundMatchesIdle": true,
+    "scaleMatchesIdle": true
+  }
+}
